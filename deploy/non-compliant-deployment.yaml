@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whoami
+  namespace: enforced
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: whoami
+  template:
+    metadata:
+      labels:
+        name: whoami
+    spec:
+      containers:
+        - name: whoami
+          image: jwilder/whoami
+          ports:
+          - containerPort: 8000
+            name: http
+          imagePullPolicy: Always

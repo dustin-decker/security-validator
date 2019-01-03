@@ -1,0 +1,23 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+ name: security-validator
+webhooks:
+ -  name: security-validator.dustin-decker.github.com
+    clientConfig:
+      service:
+        namespace: security-validator
+        name: security-validator
+        path: "/"
+      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM1ekNDQWMrZ0F3SUJBZ0lCQVRBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwdGFXNXAKYTNWaVpVTkJNQjRYRFRFNE1USXdOREEwTVRjek9Wb1hEVEk0TVRJd01qQTBNVGN6T1Zvd0ZURVRNQkVHQTFVRQpBeE1LYldsdWFXdDFZbVZEUVRDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBS3h2CkFTbHJrSGc2ZmxGQ1VySTZwZUo3MWplOC9GSXUyUmtIZWx1eXZGT2lZcTJjcmV5MnpORHFHYjZ1cHUzSit4RXQKZW8xendqTzNQbkUyWFo0ai9jSzgrcHBRRTlhQm1ja1ZzZGRseFRDMmYzeWc1L3lrQW1FdW1LRlRWS24zRFo4Ywo4a0JDVHZ6RnA0Q0R3dkNSUGpaa0NnemFUdzNSUWd3TUlsbFJRekEzVnhRaU1CWWhGcjYzVG8xK1dUbkZMM3hNCk9COWdYRXZmcmZpZGNuNDFhZzJXdXN2Q0ZzT0t0R0xNVGJVYnF4Vzh1Y0R5WDRiaXNZM3pkM1o4UUdsRlVtWFgKVzVxSVhvTjNvaDk5NHZ6SkxwZ1FDanRQa212OS81VkEwQmlldTB3cDdXY2hhL1V6a2RxdDhxemgzQ3pVSjRMUApyVnlrRFhlUHdwT1FnV0Q4anlNQ0F3RUFBYU5DTUVBd0RnWURWUjBQQVFIL0JBUURBZ0trTUIwR0ExVWRKUVFXCk1CUUdDQ3NHQVFVRkJ3TUNCZ2dyQmdFRkJRY0RBVEFQQmdOVkhSTUJBZjhFQlRBREFRSC9NQTBHQ1NxR1NJYjMKRFFFQkN3VUFBNElCQVFDbmQwZjJ3Z1RWWllDeElHSjRLRUZTOHd6QzZ3YVQ2aDZxOS9Pc3dqZUtTSDBTT3dDWgpzZUFKYWpDWlhYdW5HYTZIUnJuRmFiSmtieDRXK2RReE5Wb09wSjNXdXg5VFJvT2FHaU5TeU9KN1dGUWtSSUd4CnpuMG56YVp2WjczYUxzRVVHbm13aEZYbHgzUjJHYzBVd0ZWTUZBazU1S2xmSmhtZUk1emtvTm5NSDJoU25YeXoKTmg0L2F5M3RJTWZvamhMV3BSZW04M2pIM3JnZ3cvMC9uUWJOMi9xME45U0hpelRWd0hncjhINGg0czYwTXZKdwp5cy8weUozV1BlcWszbEJhdnE4dSsyVmt4RGVzc0FHTkhMWnJVcEZHWk45K2E5M0JFTmNEWUZuWWR1RHNJcVhyClVCNVUrQTNhVXo5ZzJQTytrSUFBeHllZmNXTVF5VXdqT2Q2NQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+    rules:
+      - operations: ["*"]
+        # operations: ["CREATE","UPDATE", "DELETE"]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["*"]
+        # resources: ["pods", "deployments", "services"]
+    failurePolicy: Ignore
+    namespaceSelector:
+      matchLabels:
+       security: enabled

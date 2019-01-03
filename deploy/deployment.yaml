@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+ name: security-validator
+ namespace: security-validator
+ labels:
+    name: security-validator
+spec:
+  ports:
+  - name: validatingwebhook
+    port: 443
+    targetPort: 443
+  selector:
+    name: security-validator
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+ name: security-validator
+ namespace: security-validator
+ labels:
+    name: security-validator
+spec:
+ replicas: 1
+ template:
+    metadata:
+     name: security-validator
+     labels:
+       name: security-validator
+    spec:
+     containers:
+       - name: security-validator
+         image: dustindecker/security-validator:latest@sha256:36fa8e566557ce6c77958b9d0ef3358fb471bf418e6f42e3131fdf21f08f8d75
+         imagePullPolicy: Always
+         resources:
+           limits:
+             memory: 50Mi
+             cpu: 300m
+           requests:
+             memory: 50Mi
+             cpu: 300m
+         volumeMounts:
+           - name: security-validator-certs
+             mountPath: /certs
+             readOnly: true
+         securityContext:
+           readOnlyRootFilesystem: true
+     volumes:
+       - name: security-validator-certs
+         secret:
+           secretName: security-validator-certs
